@@ -1,9 +1,12 @@
-import { ProgressCard } from "../components/ProgressCard";
+import { StatsGrid } from "../components/StatsGrid";
 
-export default function Dashboard() {
+export default function Dashboard({ employees, sales, products, revenue }) {
     return (
-        <div>
-            <ProgressCard />
-        </div>
+        <>
+            <div className="-ml-24 -m-9">
+                <StatsGrid sums={[employees, sales, products, revenue]} />
+            </div>
+            <div></div>
+        </>
     );
 }

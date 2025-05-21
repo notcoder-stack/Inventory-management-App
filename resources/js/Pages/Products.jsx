@@ -1,22 +1,17 @@
 import { useState } from "react";
 import Header from "../components/Header.jsx";
-import {
-    IconCirclePlus,
-    IconEdit,
-    IconSearch,
-    IconTrash,
-} from "@tabler/icons-react";
+import { IconCirclePlus } from "@tabler/icons-react";
 import Rating from "../components/Rating.jsx";
-import Modal from "../components/ProductModal.jsx";
+import ProductModal from "../components/ProductModal.jsx";
 import { Link, router } from "@inertiajs/react";
-import { Button } from "@mui/material";
+import { Card, Image, Text, Button } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 export default function Products({ products }) {
-    const [searchTerm, setSearchTerm] = useState("");
-    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [opened, { open, close }] = useDisclosure(false);
     const [selectedProduct, setSelectedProduct] = useState(null);
     const openModal = (product = null) => {
         setSelectedProduct(product);
-        setIsModalOpen(true);
+        open();
     };
     if (!products) {
         return (
@@ -37,73 +32,73 @@ export default function Products({ products }) {
     };
     return (
         <div className="mx-auto pb-5 w-full">
-            {/* Search Bar */}
-            <div className="mb-6">
-                <div className="flex items-center border-2 border-gray-200 rounded">
-                    <IconSearch className="w-5 h-5 text-gray-500 m-2" />
-                    <input
-                        className="w-full py-2 px-4 rounded bg-white"
-                        placeholder="Search by name..."
-                        value={searchTerm}
-                        onChange={(e) => setSearchTerm(e.target.value)}
-                    />
-                </div>
-            </div>
             {/* Header Bar */}
             <div className="flex justify-between items-center mb-6">
                 <Header name="Products" />
-                <button
-                    className="flex items-center bg-blue-500 hover:bg-blue-700 text-gray-200 font-bold py-2 px-4 rounded"
-                    onClick={() => openModal()}
+                <Button
+                    variant="default"
+                    onClick={() => {
+                        setSelectedProduct(null);
+                        open();
+                    }}
                 >
                     <IconCirclePlus className="w-5 h-5 mr-2 !text-gray-200" />
                     Create Product
-                </button>
+                </Button>
             </div>
             {/* Products List */}
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10 justify-between">
                 {products.data.map((product) => (
-                    <div
+                    <Card
+                        shadow="sm"
+                        padding="lg"
+                        radius="md"
+                        withBorder
                         key={product.id}
-                        className="border shadow rounded-md p-4 max-w-full w-full mx-auto"
                     >
+                        <Card.Section>
+                            {product.image ? (
+                                <Image
+                                    src={product.image}
+                                    height={160}
+                                    alt={product.name}
+                                />
+                            ) : (
+                                "No Image"
+                            )}
+                        </Card.Section>
+
                         <div className="flex flex-col items-center">
-                            <img
-                                src={product.image}
-                                alt={product.name}
-                                style={{ width: 120 }}
-                            />
-                            <h3 className="text-lg text-gray-900 font-sembold">
-                                {product.name}
-                            </h3>
-                            <p className="text-gray-800">
+                            <Text fw={500}>{product.name}</Text>
+                            <Text size="sm" c="dimmed">
                                 ${product.price.toFixed(2)}
-                            </p>
-                            <div className="text-sm text-gray-600 mt-1">
+                            </Text>
+                            <Text size="sm" c="dimmed">
                                 Stock: {product.stockQuantity}
-                            </div>
+                            </Text>
                             {product.rating && (
                                 <div className="flex items-center mt-2">
                                     <Rating rating={product.rating} />
                                 </div>
                             )}
-                            <div className="items-inline mt-6 flex justify-between gap-4">
-                                <Button
-                                    variant="contained"
-                                    onClick={() => openModal(product)}
-                                >
-                                    <IconEdit />
-                                </Button>
-                                <Button
-                                    variant="contained"
-                                    color="error"
-                                    onClick={() => handleDelete(product.id)}
-                                >
-                                    <IconTrash />
-                                </Button>
-                            </div>
                         </div>
-                    </div>
+
+                        <div className="items-inline mt-6 flex justify-between gap-4">
+                            <Button
+                                variant="filled"
+                                onClick={() => openModal(product)}
+                            >
+                                Edit
+                            </Button>
+                            <Button
+                                variant="contained"
+                                color="danger"
+                                onClick={() => handleDelete(product.id)}
+                            >
+                                Delete
+                            </Button>
+                        </div>
+                    </Card>
                 ))}
             </div>
             {/* Pagination */}
@@ -126,10 +121,10 @@ export default function Products({ products }) {
                 )}
             </div>
             {/* Modal */}
-            <Modal
-                isOpen={isModalOpen}
-                onClose={() => setIsModalOpen(false)}
-                product={selectedProduct}
+            <ProductModal
+                isOpen={opened}
+                onClose={close}
+                employee={selectedProduct}
             />
         </div>
     );

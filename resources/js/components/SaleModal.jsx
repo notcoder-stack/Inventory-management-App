@@ -3,31 +3,34 @@ import { router } from "@inertiajs/react";
 import { Button } from "@mantine/core";
 import { Input } from "@mantine/core";
 import { Modal } from "@mantine/core";
-export default function EmployeeModal({ isOpen, onClose, employee }) {
+export default function SupplierModal({ isOpen, onClose, sale }) {
     const [formData, setFormData] = useState({
-        name: "",
-        address: "",
-        email: "",
-        department: "",
+        productName: "",
+        quantity: 0,
+        price: 0,
+        revenue: 0,
+        date: new Date(),
     });
 
     useEffect(() => {
-        if (employee) {
+        if (sale) {
             setFormData({
-                name: employee.name,
-                address: employee.address,
-                email: employee.email,
-                department: employee.department,
+                productName: sale.productName,
+                quantity: sale.quantity,
+                price: sale.price,
+                revenue: sale.revenue,
+                date: sale.date,
             });
         } else {
             setFormData({
-                name: "",
-                address: "",
-                email: "",
-                department: "",
+                productName: "",
+                quantity: "",
+                price: "",
+                revenue: "",
+                date: "",
             });
         }
-    }, [employee]);
+    }, [sale]);
 
     const handleChange = (e) => {
         setFormData({
@@ -39,33 +42,30 @@ export default function EmployeeModal({ isOpen, onClose, employee }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         const data = new FormData();
-        data.append("name", formData.name);
-        data.append("address", formData.address);
-        data.append("email", formData.email);
-        data.append("department", formData.department);
-        if (employee?.id) {
+        data.append("productName", formData.productName);
+        data.append("quantity", formData.quantity);
+        data.append("price", formData.price);
+        data.append("revenue", formData.revenue);
+        data.append("date", formData.date);
+        if (sale?.id) {
             data.append("_method", "PUT");
-            router.post(`/employees/${employee.id}`, data, {
+            router.post(`/sales/${sale.id}`, data, {
                 onSuccess: () => {
                     onClose();
                     router.reload();
                 },
                 onError: (errors) => {
-                    console.error(
-                        errors.message || "Failed to submit employee",
-                    );
+                    console.error(errors.message || "Failed to submit sale");
                 },
             });
         } else {
-            router.post("/employees", data, {
+            router.post("/sales", data, {
                 onSuccess: () => {
                     onClose();
                     router.reload();
                 },
                 onError: (errors) => {
-                    console.error(
-                        errors.message || "Failed to submit employee",
-                    );
+                    console.error(errors.message || "Failed to submit sale");
                 },
             });
         }
@@ -74,43 +74,48 @@ export default function EmployeeModal({ isOpen, onClose, employee }) {
     return (
         <Modal opened={isOpen} onClose={onClose}>
             <form onSubmit={handleSubmit} className="mt-5">
-                <label htmlFor="name">Name</label>
+                <label htmlFor="productName">Product Name</label>
                 <Input
                     type="text"
-                    name="name"
-                    value={formData.name}
+                    name="productName"
+                    value={formData.productName}
                     onChange={handleChange}
-                    placeholder="Joe Doe"
                     className="block w-full mb-2 p-2"
                     required
                 />
-                <label htmlFor="address">Address</label>
+                <label htmlFor="quantity">Quantity</label>
                 <Input
-                    type="text"
-                    name="address"
-                    value={formData.address}
+                    type="number"
+                    name="quantity"
+                    value={formData.quantity}
                     onChange={handleChange}
-                    placeholder="123 ST AV ..."
                     className="block w-full mb-2 p-2"
                     required
                 />
-                <label htmlFor="email">Email</label>
+                <label htmlFor="price">Price</label>
                 <Input
-                    type="text"
-                    name="email"
-                    value={formData.email}
+                    type="number"
+                    name="price"
+                    value={formData.price}
                     onChange={handleChange}
-                    placeholder="email@exemple.com"
                     className="block w-full mb-2 p-2"
                     required
                 />
-                <label htmlFor="department">Department</label>
+                <label htmlFor="revenue">Revenue</label>
                 <Input
-                    type="text"
-                    name="department"
-                    value={formData.department}
+                    type="number"
+                    name="revenue"
+                    value={formData.revenue}
                     onChange={handleChange}
-                    placeholder="ex:Electronics"
+                    className="block w-full mb-2 p-2"
+                    required
+                />
+                <label htmlFor="date">Date</label>
+                <Input
+                    type="date"
+                    name="date"
+                    value={formData.date}
+                    onChange={handleChange}
                     className="block w-full mb-2 p-2"
                     required
                 />

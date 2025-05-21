@@ -19,6 +19,7 @@ class SaleFactory extends Factory
         return [
             "productName" => fake()->name(),
             "quantity" => fake()->numberBetween(1, 100),
+            "price" => fake()->numberBetween(1, 500),
             "revenue" => fake()->numberBetween(100, 1000),
             "date" => fake()->date(),
         ];

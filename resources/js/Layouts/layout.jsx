@@ -1,15 +1,11 @@
-import DashboardWrapper from "../dashboardWrapper"
-import '@mantine/core/styles.css';
-import { MantineProvider } from '@mantine/core';
+import { MantineProvider } from "@mantine/core";
+import DashboardWrapper from "../dashboardWrapper";
+import "@mantine/core/styles.css";
 
 export default function Layout({ children }) {
-    return(
+    return (
         <MantineProvider>
-            <main>
-                <DashboardWrapper>
-                    { children }
-                </DashboardWrapper>
-            </main>
+            <DashboardWrapper>{children}</DashboardWrapper>
         </MantineProvider>
-    )
+    );
 }

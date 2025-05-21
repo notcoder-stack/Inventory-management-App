@@ -3,31 +3,28 @@ import { router } from "@inertiajs/react";
 import { Button } from "@mantine/core";
 import { Input } from "@mantine/core";
 import { Modal } from "@mantine/core";
-export default function EmployeeModal({ isOpen, onClose, employee }) {
+export default function SupplierModal({ isOpen, onClose, supplier }) {
     const [formData, setFormData] = useState({
         name: "",
-        address: "",
         email: "",
-        department: "",
+        address: "",
     });
 
     useEffect(() => {
-        if (employee) {
+        if (supplier) {
             setFormData({
-                name: employee.name,
-                address: employee.address,
-                email: employee.email,
-                department: employee.department,
+                name: supplier.name,
+                email: supplier.email,
+                address: supplier.address,
             });
         } else {
             setFormData({
                 name: "",
-                address: "",
                 email: "",
-                department: "",
+                address: "",
             });
         }
-    }, [employee]);
+    }, [supplier]);
 
     const handleChange = (e) => {
         setFormData({
@@ -40,31 +37,30 @@ export default function EmployeeModal({ isOpen, onClose, employee }) {
         e.preventDefault();
         const data = new FormData();
         data.append("name", formData.name);
-        data.append("address", formData.address);
         data.append("email", formData.email);
-        data.append("department", formData.department);
-        if (employee?.id) {
+        data.append("address", formData.address);
+        if (supplier?.id) {
             data.append("_method", "PUT");
-            router.post(`/employees/${employee.id}`, data, {
+            router.post(`/suppliers/${supplier.id}`, data, {
                 onSuccess: () => {
                     onClose();
                     router.reload();
                 },
                 onError: (errors) => {
                     console.error(
-                        errors.message || "Failed to submit employee",
+                        errors.message || "Failed to submit supplier",
                     );
                 },
             });
         } else {
-            router.post("/employees", data, {
+            router.post("/suppliers", data, {
                 onSuccess: () => {
                     onClose();
                     router.reload();
                 },
                 onError: (errors) => {
                     console.error(
-                        errors.message || "Failed to submit employee",
+                        errors.message || "Failed to submit supplier",
                     );
                 },
             });
@@ -84,16 +80,6 @@ export default function EmployeeModal({ isOpen, onClose, employee }) {
                     className="block w-full mb-2 p-2"
                     required
                 />
-                <label htmlFor="address">Address</label>
-                <Input
-                    type="text"
-                    name="address"
-                    value={formData.address}
-                    onChange={handleChange}
-                    placeholder="123 ST AV ..."
-                    className="block w-full mb-2 p-2"
-                    required
-                />
                 <label htmlFor="email">Email</label>
                 <Input
                     type="text"
@@ -104,13 +90,13 @@ export default function EmployeeModal({ isOpen, onClose, employee }) {
                     className="block w-full mb-2 p-2"
                     required
                 />
-                <label htmlFor="department">Department</label>
+                <label htmlFor="address">Address</label>
                 <Input
                     type="text"
-                    name="department"
-                    value={formData.department}
+                    name="address"
+                    value={formData.address}
                     onChange={handleChange}
-                    placeholder="ex:Electronics"
+                    placeholder="123 ST AV ..."
                     className="block w-full mb-2 p-2"
                     required
                 />
