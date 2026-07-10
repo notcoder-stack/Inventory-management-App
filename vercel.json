@@ -24,7 +24,8 @@
   "env": {
     "APP_ENV": "production",
     "APP_DEBUG": "true",
-    "LOG_CHANNEL": "stderr",
+    "LOG_CHANNEL": "errorlog",
+    "LOG_EMERGENCY_PATH": "/tmp/laravel-emergency.log",
     "VIEW_COMPILED_PATH": "/tmp/storage/framework/views",
     "SESSION_DRIVER": "cookie",
     "CACHE_STORE": "array"
