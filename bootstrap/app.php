@@ -15,8 +15,7 @@ foreach ([$_overrideStorage . '/logs', $_overrideStorage . '/bootstrap/cache', $
 }
 unset($_overrideStorage, $_dir);
 
-return Application::configure(basePath: dirname(__DIR__))
-    ->useStoragePath('/tmp/storage')
+$app = Application::configure(basePath: dirname(__DIR__))
     ->withRouting(
         web: __DIR__.'/../routes/web.php',
         commands: __DIR__.'/../routes/console.php',
@@ -30,3 +29,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ->withExceptions(function (Exceptions $exceptions) {
         //
     })->create();
+
+$app->useStoragePath('/tmp/storage');
+
+return $app;
