@@ -23,7 +23,6 @@ const data = [
     { link: "/suppliers", label: "Suppliers", icon: IconForklift },
     { link: "/employees", label: "Employees", icon: IconUser },
     { link: "/settings", label: "Settings", icon: IconAdjustmentsHorizontal },
-    { link: "/purchase-orders", label: "Purchase Orders", icon: IconReceipt },
 ];
 
 export default function Sidebar({ onClose }) {
