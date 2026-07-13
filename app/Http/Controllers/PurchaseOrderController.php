@@ -71,20 +71,20 @@ class PurchaseOrderController extends Controller
         return redirect()->back()->with('success', 'Purchase order created successfully.');
     }
 
-    public function show(Purchase_Order $purchase_Order)
+    public function show(Purchase_Order $purchase_order)
     {
         return Inertia::render('PurchaseOrders/Show', [
-            'purchaseOrder' => $purchase_Order->load(['items.product', 'amendments', 'receipts'])
+            'purchaseOrder' => $purchase_order->load(['items.product', 'amendments', 'receipts'])
         ]);
     }
 
-    public function approve(Purchase_Order $purchase_Order, Request $request)
+    public function approve(Purchase_Order $purchase_order, Request $request)
     {
-        $this->service->approve($purchase_Order, $request->user()?->id ?? 'manager');
+        $this->service->approve($purchase_order, $request->user()?->id ?? 'manager');
         return redirect()->back()->with('success', 'Purchase order approved.');
     }
 
-    public function amend(Purchase_Order $purchase_Order, Request $request)
+    public function amend(Purchase_Order $purchase_order, Request $request)
     {
         $request->validate([
             'reason' => 'required|string',
@@ -92,7 +92,7 @@ class PurchaseOrderController extends Controller
         ]);
 
         $this->service->amend(
-            $purchase_Order, 
+            $purchase_order, 
             $request->user()?->id ?? 'system', 
             $request->input('reason'), 
             $request->input('items')
@@ -101,15 +101,15 @@ class PurchaseOrderController extends Controller
         return redirect()->back()->with('success', 'Purchase order amended.');
     }
 
-    public function cancel(Purchase_Order $purchase_Order)
+    public function cancel(Purchase_Order $purchase_order)
     {
-        $this->service->cancel($purchase_Order);
+        $this->service->cancel($purchase_order);
         return redirect()->back()->with('success', 'Purchase order cancelled.');
     }
 
-    public function destroy(Purchase_Order $purchase_Order)
+    public function destroy(Purchase_Order $purchase_order)
     {
-        $purchase_Order->delete();
+        $purchase_order->delete();
         return redirect()->back()->with('success', 'Purchase order deleted.');
     }
 }

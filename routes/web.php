@@ -38,9 +38,9 @@ Route::middleware("auth")->group(function () {
     Route::resource("employees", EmployeeController::class);
 
     Route::resource("purchase-orders", PurchaseOrderController::class);
-    Route::post("purchase-orders/{purchase_Order}/approve", [PurchaseOrderController::class, "approve"])->name("purchase-orders.approve");
-    Route::post("purchase-orders/{purchase_Order}/amend", [PurchaseOrderController::class, "amend"])->name("purchase-orders.amend");
-    Route::post("purchase-orders/{purchase_Order}/cancel", [PurchaseOrderController::class, "cancel"])->name("purchase-orders.cancel");
+    Route::post("purchase-orders/{purchase_order}/approve", [PurchaseOrderController::class, "approve"])->name("purchase-orders.approve");
+    Route::post("purchase-orders/{purchase_order}/amend", [PurchaseOrderController::class, "amend"])->name("purchase-orders.amend");
+    Route::post("purchase-orders/{purchase_order}/cancel", [PurchaseOrderController::class, "cancel"])->name("purchase-orders.cancel");
 
     Route::put("/settings/password", [SettingsController::class, "updatePassword"])->name("settings.password");
     Route::delete("/settings/account", [SettingsController::class, "destroyAccount"])->name("settings.account.destroy");
